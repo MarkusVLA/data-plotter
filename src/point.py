@@ -40,9 +40,9 @@ class PointCloud:
         self.color_axis = color_axis
 
         vertex_shader = shaders.compileShader('''
-            #version 330
-            in vec3 position;
-            out vec3 vertex_color;
+            #version 120
+            attribute vec3 position;
+            varying vec3 vertex_color;
             uniform mat4 modelview;
             uniform mat4 projection;
             void main() {
@@ -51,12 +51,12 @@ class PointCloud:
             }''', GL_VERTEX_SHADER)
 
         fragment_shader = shaders.compileShader('''
-            #version 330
-            in vec3 vertex_color;
-            out vec4 frag_color;
+            #version 120
+            varying vec3 vertex_color;
             void main() {
-                frag_color = vec4(vertex_color, 1.0);
+                gl_FragColor = vec4(vertex_color, 1.0);
             }''', GL_FRAGMENT_SHADER)
+
             
         self.shader = shaders.compileProgram(vertex_shader, fragment_shader)
 

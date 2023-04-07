@@ -5,8 +5,6 @@ from OpenGL.GLUT import *
 import numpy as np
 import random
 
-
-
 from camera import Camera
 from point import PointCloud
 from coordinate_axes import CoordinateAxes
@@ -16,30 +14,6 @@ from mesh import Mesh3D
 
 
 
-
-def sinc(x, z):
-    r = np.sqrt(x**2 + z**2)
-    return x, np.sinc(r) * 3, z
-
-def sinc_points():
-    points = []
-    
-    for i in range(400):
-        for j in range(400):
-            x = 0.03 * (j - 200)
-            y = 0.03 * (i - 200)
-            points.append(sinc(x,y))
-
-    return points
-
-def generate_random_points(n):
-    points = []
-    for i in range(n):
-        x = random.uniform(-3, 3)
-        y = random.uniform(-3, 3)
-        z = random.uniform(-3, 3)
-        points.append((x, x, z))
-    return points
 
 def load_points_from_csv(paht):
     points = []
@@ -61,7 +35,7 @@ def load_points_from_csv(paht):
 
 class Window:
 
-    def __init__(self, width, height, title):
+    def __init__(self, width, height, title, data:list):
         if not glfw.init():
             raise Exception("Failed to initialize GLFW")
         self.width = width
@@ -97,16 +71,13 @@ class Window:
         self.axes = CoordinateAxes(length=7.0, x_offset=-3.0, y_offset=-3.0, z_offset=-3.0)
 
         #self.data = generate_random_points(150000)
-        self.data = sinc_points()
+        self.data = data
         #self.data = load_points_from_csv("data/cobblestone_10k.csv")
         self.p_cloud = PointCloud(self.data, color_axis='y')
         self.cube = Cube((0,0,0), 1, (1.0, 0, 0))
         self.plane = Plane(-3, 3, color=(0.0, 0.1, 0.2))
-        self.mesh_points = sinc_points()
-        self.mesh = Mesh3D(self.mesh_points)
-    
-
-        self.setup_camera()
+        self.mesh = Mesh3D(data)
+        self.setup_camera() # Configure camera
 
     def setup_camera(self):
         glMatrixMode(GL_PROJECTION)

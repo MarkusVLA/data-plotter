@@ -21,10 +21,10 @@ class Mesh3D:
 
         # Create shader program
         vertex_shader = shaders.compileShader('''
-            #version 330
+            #version 120
 
-            in vec3 position;
-            out vec3 vertex_color;
+            attribute vec3 position;
+            varying vec3 vertex_color;
 
             uniform mat4 modelview;
             uniform mat4 projection;
@@ -35,11 +35,10 @@ class Mesh3D:
             }''', GL_VERTEX_SHADER)
 
         fragment_shader = shaders.compileShader('''
-            #version 330
-            in vec3 vertex_color;
-            out vec4 frag_color;
+            #version 120
+            varying vec3 vertex_color;
             void main() {
-                frag_color = vec4(vertex_color, 1.0);
+                gl_FragColor = vec4(vertex_color, 1.0);
             }''', GL_FRAGMENT_SHADER)
 
         self.shader = shaders.compileProgram(vertex_shader, fragment_shader)
