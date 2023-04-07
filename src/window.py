@@ -82,7 +82,7 @@ class Window:
     def setup_camera(self):
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        gluPerspective(40.0, self.width / self.height, 0.5, 100.0)
+        gluPerspective(90.0, self.width / self.height, 0.5, 100.0)
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
 
@@ -133,11 +133,11 @@ class Window:
         glEnable(GL_COLOR_MATERIAL)
 
         # Draw the point cloud
-        self.p_cloud.draw()
+        #self.p_cloud.draw()
         self.axes.draw()
         #self.cube.draw()
         #self.plane.draw()
-        #self.mesh.draw()
+        self.mesh.draw()
 
         glDisable(GL_COLOR_MATERIAL)
 

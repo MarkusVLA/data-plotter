@@ -2,6 +2,7 @@ import numpy as np
 from OpenGL.GL import *
 from OpenGL.arrays import vbo
 from OpenGL.GL import shaders
+from scipy.spatial import Delaunay
 
 
 class Mesh3D:
@@ -10,10 +11,9 @@ class Mesh3D:
         self.points = np.array(points, dtype=np.float32)
         self.num_points = len(self.points)
 
-        # Generate indices for triangles
-        self.indices = []
-        for i in range(0, self.num_points, 3):
-            self.indices.extend([i, i+1, i+2])
+        # Perform Delaunay triangulation to from mesh
+        tri = Delaunay(self.points[:, [0, 2]])  # Triangulate using only the X and Z coordinates
+        self.indices = tri.simplices.flatten()
 
         # Create VBO and bind data
         self.vbo = vbo.VBO(self.points)
@@ -31,7 +31,8 @@ class Mesh3D:
 
             void main() {
                 gl_Position = projection * modelview * vec4(position, 1.0);
-                vertex_color = vec3((position.x + 1.0) / 2.0, (position.y + 1.0) / 2.0, (position.z + 1.0) / 2.0);
+                vertex_color = vec3((position.y + 1.0) / 2.0, (position.y + 3.0) / 6.0, (position.y + 3.0) / 6.0);
+                //vertex_color = vec3((position.y + 1.0) / 2.0 * 0.1, (position.z + 3.0) / 6.0, (position.y + 3.0) / 6.0);
             }''', GL_VERTEX_SHADER)
 
         fragment_shader = shaders.compileShader('''

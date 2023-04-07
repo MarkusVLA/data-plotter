@@ -9,7 +9,7 @@ from window import Window
 
 def sinc(x, z):
     r = np.sqrt(x**2 + z**2)
-    return x, np.sinc(r) * 3, z
+    return x, np.sinc(r) * 3.33, z
 
 def sinc_points():
     points = []
@@ -28,7 +28,7 @@ def generate_random_points(n):
         x = random.uniform(-3, 3)
         y = random.uniform(-3, 3)
         z = random.uniform(-3, 3)
-        points.append((x, x, z))
+        points.append((x, y, z))
     return points
 
 
