@@ -13,32 +13,14 @@ from plane import Plane
 from mesh import Mesh3D
 
 
-
-
-def load_points_from_csv(paht):
-    points = []
-    with open(paht, "r") as data:
-        p = 0
-        for line in data.readlines():
-            if line[0] != "x":
-                split = line.split(",")
-                if len(split) == 3:
-                    try:
-                        points.append((int(split[0]) / 2000, int(split[1]) / 2000, int(split[2]) / 2000))
-
-                    except Exception as e:
-                        print(split)
-                        print("\n\n", e)
-    #print(points)
-    return points
-
-
 class Window:
 
     def __init__(self, width, height, title, data:list):
         if not glfw.init():
             raise Exception("Failed to initialize GLFW")
         self.width = width
+        self.damping_factor = 0.1
+        self.scroll_damping_factor = 0.1
         self.height = height
         self.window = glfw.create_window(width, height, title, None, None)
         if not self.window:
@@ -50,6 +32,7 @@ class Window:
         glfw.set_key_callback(self.window, self.key_callback)
         glfw.set_mouse_button_callback(self.window, self.mouse_button_callback)
         glfw.set_cursor_pos_callback(self.window, self.cursor_position_callback)
+        glfw.set_scroll_callback(self.window, self.scroll_callback)
 
         glEnable(GL_DEPTH_TEST)
         #glEnable(GL_LIGHTING)
@@ -97,6 +80,10 @@ class Window:
     def key_callback(self, window, key, scancode, action, mods):
         pass
 
+    def scroll_callback(self, window, xoffset, yoffset):
+        # Multiply the scroll offset by the damping factor
+        self.camera.adjust_radius(-yoffset * self.scroll_damping_factor)
+
     def mouse_button_callback(self, window, button, action, mods):
         if button == glfw.MOUSE_BUTTON_LEFT:
             if action == glfw.PRESS:
@@ -106,16 +93,18 @@ class Window:
                 self.mouse_dragging = False
 
     #if self.mouse_dragging:
-    def cursor_position_callback(self, window, ypos, xpos):
+    def cursor_position_callback(self, window, xpos, ypos):
         if self.mouse_dragging:
             dx = xpos - self.last_mouse_x
             dy = ypos - self.last_mouse_y
 
-            self.camera.angle_x += dx * 0.2
-            self.camera.angle_y += dy * 0.2
+            # Swap dx and dy to have correct correspondence with the camera movement
+            self.camera.angle_x -= dy * self.damping_factor
+            self.camera.angle_y += dx * self.damping_factor
 
-            self.last_mouse_x = xpos
-            self.last_mouse_y = ypos
+        # Update the last mouse position continuously
+        self.last_mouse_x = xpos
+        self.last_mouse_y = ypos
 
     def handle_input(self):
         glfw.poll_events()

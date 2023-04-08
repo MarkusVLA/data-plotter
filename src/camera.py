@@ -11,3 +11,7 @@ class Camera:
         camera_y = self.radius * np.sin(np.radians(self.angle_y)) * np.sin(np.radians(self.angle_x))
         camera_z = self.radius * np.cos(np.radians(self.angle_y))
         return np.array([camera_x, camera_y, camera_z])
+
+    def adjust_radius(self, delta):
+        self.radius += delta
+        self.radius = max(1, self.radius)  # Set a minimum zoom level
