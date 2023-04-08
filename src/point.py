@@ -39,24 +39,16 @@ class PointCloud:
         self.vbo = vbo.VBO(self.points)
         self.color_axis = color_axis
 
-        vertex_shader = shaders.compileShader('''
-            #version 120
-            attribute vec3 position;
-            varying vec3 vertex_color;
-            uniform mat4 modelview;
-            uniform mat4 projection;
-            void main() {
-                gl_Position = projection * modelview * vec4(position, 1.0);
-                vertex_color = vec3((position.x + 3) / 6.0 * 0.4, (position.y + 3) / 6.0, (position.z + 3) / 6.0 * 0.4); // Normalize z coordinate to [0, 1] range for color
-            }''', GL_VERTEX_SHADER)
+         # Load shader code
+        with open("src/shaders/point_vertex_shader.glsl", "r") as f:
+            vertex_shader_code = f.read()
 
-        fragment_shader = shaders.compileShader('''
-            #version 120
-            varying vec3 vertex_color;
-            void main() {
-                gl_FragColor = vec4(vertex_color, 1.0);
-            }''', GL_FRAGMENT_SHADER)
+        with open("src/shaders/point_fragment_shader.glsl", "r") as f:
+            fragment_shader_code = f.read()
 
+        # compile shaders
+        vertex_shader = shaders.compileShader(vertex_shader_code, GL_VERTEX_SHADER)
+        fragment_shader = shaders.compileShader(fragment_shader_code, GL_FRAGMENT_SHADER)
             
         self.shader = shaders.compileProgram(vertex_shader, fragment_shader)
 

@@ -16,8 +16,8 @@ def sinc_points():
     
     for i in range(400):
         for j in range(400):
-            x = 0.03 * (j - 200)
-            y = 0.03 * (i - 200)
+            x = 0.015 * (j - 200)
+            y = 0.015 * (i - 200)
             points.append(sinc(x,y))
 
     return points

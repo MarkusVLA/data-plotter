@@ -75,14 +75,15 @@ class Window:
         #self.data = load_points_from_csv("data/cobblestone_10k.csv")
         self.p_cloud = PointCloud(self.data, color_axis='y')
         self.cube = Cube((0,0,0), 1, (1.0, 0, 0))
-        self.plane = Plane(-3, 3, color=(0.0, 0.1, 0.2))
+        #self.plane = Plane(position=(-1.0,-1.0,-1.0),grid_scale=0.2, rotation=(0,90,90), color=(0.5,0.5,0.5,0.5))
         self.mesh = Mesh3D(data)
         self.setup_camera() # Configure camera
+
 
     def setup_camera(self):
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        gluPerspective(90.0, self.width / self.height, 0.5, 100.0)
+        gluPerspective(60.0, self.width / self.height, 0.5, 100.0)
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
 
@@ -135,8 +136,6 @@ class Window:
         # Draw the point cloud
         #self.p_cloud.draw()
         self.axes.draw()
-        #self.cube.draw()
-        #self.plane.draw()
         self.mesh.draw()
 
         glDisable(GL_COLOR_MATERIAL)
