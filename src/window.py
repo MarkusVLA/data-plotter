@@ -41,7 +41,6 @@ class Window:
         glViewport(0, 0, width, height)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        gluPerspective(60, width / height, 1, 100)
         glMatrixMode(GL_MODELVIEW)
 
         glClearColor(0.1, 0.1, 0.1, 1.0)
@@ -57,7 +56,7 @@ class Window:
         self.data = data
         #self.data = load_points_from_csv("data/cobblestone_10k.csv")
         self.p_cloud = PointCloud(self.data, color_axis='y')
-        self.cube = Cube((0,0,0), 1, (1.0, 0, 0))
+        #self.cube = Cube((0,0,0), 1, (1.0, 0, 0))
         #self.plane = Plane(position=(-1.0,-1.0,-1.0),grid_scale=0.2, rotation=(0,90,90), color=(0.5,0.5,0.5,0.5))
         self.mesh = Mesh3D(data)
         self.setup_camera() # Configure camera
@@ -98,7 +97,6 @@ class Window:
             dx = xpos - self.last_mouse_x
             dy = ypos - self.last_mouse_y
 
-            # Swap dx and dy to have correct correspondence with the camera movement
             self.camera.angle_x -= dy * self.damping_factor
             self.camera.angle_y += dx * self.damping_factor
 

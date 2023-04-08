@@ -1,5 +1,3 @@
-import os
-import numpy as np
 import freetype
 from OpenGL.GL import *
 from OpenGL.GL.shaders import compileProgram, compileShader
@@ -11,9 +9,9 @@ class TextRenderer:
         self.window_height = window_height
 
         # Load and compile shaders
-        with open(os.path.join("shaders", "text_vertex_shader.glsl"), "r") as f:
+        with open("src/shaders/text_vertex_shader.glsl", "r") as f:
             vertex_shader = compileShader(f.read(), GL_VERTEX_SHADER)
-        with open(os.path.join("shaders", "text_fragment_shader.glsl"), "r") as f:
+        with open("src/shaders/text_fragment_shader.glsl", "r") as f:
             fragment_shader = compileShader(f.read(), GL_FRAGMENT_SHADER)
         self.shader = compileProgram(vertex_shader, fragment_shader)
 
