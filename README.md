@@ -1,5 +1,5 @@
 # data-plotter
-GPU-Enhanced data plotting tool with with OpenGL (Work in progress)
+GPU-Enhanced data plotting tool with OpenGL (Work in progress)
 
 ![alt text](https://raw.githubusercontent.com/MarkusVLA/data-plotter/main/img/demo_img.jpg)
 
